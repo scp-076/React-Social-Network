@@ -1,0 +1,15 @@
+.appWrapper {
+  display: grid;
+  grid-template-rows: 100px 1fr;
+  grid-template-columns: 2fr 10fr;
+  grid-gap: 7px;
+  padding: 50px 150px;
+
+  grid-template-areas: "header header" "nav content";
+}
+
+.appWrapperContent {
+  grid-area: content;
+  background: linear-gradient(90deg, #c0c0aa 0%, #1cefff 100%);
+  border-radius: 10px;
+}

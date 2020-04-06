@@ -1,0 +1,27 @@
+.post {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+}
+
+.postWrap {
+  display: flex;
+  align-items: center;
+}
+
+.postImg  {
+  width: 90px;
+  height: 90px;
+  border-radius: 20px;
+}
+
+.postSpan {
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.LikesSpan {
+  display: block;
+  padding: 10px;
+}

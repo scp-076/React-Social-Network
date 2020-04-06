@@ -1,0 +1,29 @@
+.header {
+    grid-area: header;
+    background-color: #39ABA2;
+    border-radius: 10px;
+}
+
+.loginWrapper {
+    float: right;
+    margin: 40px;
+}
+
+.loginButton {
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.logoutButton {
+    color: #fff;
+    background-color: #fca503;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 5px;
+}

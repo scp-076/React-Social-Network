@@ -1,0 +1,33 @@
+.dialogs {
+  display: grid;
+  grid-template-columns: 2fr 10fr;
+
+  &__items {
+    padding: 10px;
+    border-right: 2px solid #EC6EAD;
+  }
+
+  &__item {
+    margin-bottom: 10px;
+
+    &_active {
+      margin-bottom: 10px;
+      color: #fff;
+    }
+  }
+
+}
+
+.messages {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  margin: 0 auto;
+  padding: 10px;
+
+  &__item {
+    margin-bottom: 10px;
+    font-size: 17px;
+    font-weight: bold;
+  }
+}

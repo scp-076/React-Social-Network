@@ -1,0 +1,44 @@
+.photo {
+  width: 200px;
+  height: 150px;
+  border-radius: 10px;
+}
+
+.follow {
+  width: 100px;
+  height: 30px;
+  border-radius: 20px;
+  background-color: #5B86E5;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  outline: none;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.follow:disabled {
+  color: #b3bab5;
+}
+
+.usersWrap {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.infoWrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-left: 50px;
+  font-size: 17px;
+  color: #5B86E5;
+  font-weight: bold;
+}
+
+.userName {
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #fff;
+  letter-spacing: 2px;
+}
