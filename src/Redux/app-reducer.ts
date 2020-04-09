@@ -2,12 +2,15 @@ import {getAuthUserDataThunkCreator} from "./auth-reducer";
 
 const SET_INIT = 'SET_INIT';
 
+export type initialStateType = {
+    initialized: boolean
+};
 
-let initialState = {
+let initialState: initialStateType = {
     initialized: false
 };
 
-const AppReducer = (state = initialState, action) => {
+const AppReducer = (state = initialState, action: any): initialStateType => {
 
     switch (action.type) {
         case SET_INIT:
@@ -21,9 +24,13 @@ const AppReducer = (state = initialState, action) => {
     }
 };
 
-export const setInitAC = () => ({type: SET_INIT});
+type setInitACType = {
+    type: typeof SET_INIT
+};
 
-export const initializeAppThunkCreator = () => (dispatch) => {
+export const setInitAC = (): setInitACType => ({type: SET_INIT});
+
+export const initializeAppThunkCreator = () => (dispatch: any) => {
     let promise = dispatch(getAuthUserDataThunkCreator());
 
     Promise.all([promise])
