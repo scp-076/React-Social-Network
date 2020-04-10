@@ -12,17 +12,37 @@ import {
     getCurrentPageSelector, getFollowingInProgressSelector,
     getPageSizeSelector, getPreloaderSelector,
     getTotalUsersCountSelector,
-    getUsersSelector
+    getUsers
 } from "../../Redux/users-selectors";
+import {userType} from '../../types/types';
+import {AppStateType} from '../../Redux/redux-store';
 
+type MapStateToPropsType = {
+    currentPage: number,
+    pageSize: number,
+    preloader: boolean,
+    totalUsersCount: number,
+    users: Array<userType>,
+    followingInProgress: Array<number>
+};
+type MapDispatchToPropsType = {
+    requestUsersThunk: (currentPage: number, pageSize: number) => void,
+    setCurrentPage: (pageNumber: number) => void,
+    followThunk: (userId: number) => void,
+    unfollowThunk: (userId: number) => void
+};
+type OwnPropsType = {
+    pageTitle: string
+};
+type propsType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType;
 
-class UsersContainer extends React.Component {
+class UsersContainer extends React.Component<propsType> {
 
     componentDidMount() {
         this.props.requestUsersThunk(this.props.currentPage, this.props.pageSize);
     }
 
-    onPageChanged = (pageNumber) => {
+    onPageChanged = (pageNumber: number) => {
         this.props.requestUsersThunk(pageNumber, this.props.pageSize);
         this.props.setCurrentPage(pageNumber);
         // this.props.togglePreloader(true);
@@ -35,13 +55,13 @@ class UsersContainer extends React.Component {
 
     render() {
         return <>
-            {this.props.preloader ? <Preloader/> :  <Users
+            <h2>{this.props.pageTitle}</h2>
+            {this.props.preloader ? <Preloader/> : <Users
                 totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 currentPage={this.props.currentPage}
                 onPageChanged={this.onPageChanged}
                 users={this.props.users}
-                toggleFollowingInProgress={this.props.toggleFollowingInProgress}
                 followingInProgress={this.props.followingInProgress}
                 followThunk={this.props.followThunk}
                 unfollowThunk={this.props.unfollowThunk}
@@ -61,9 +81,9 @@ class UsersContainer extends React.Component {
 //     }
 // };
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
-        users: getUsersSelector(state),
+        users: getUsers(state),
         pageSize: getPageSizeSelector(state),
         totalUsersCount: getTotalUsersCountSelector(state),
         currentPage: getCurrentPageSelector(state),
@@ -72,14 +92,15 @@ let mapStateToProps = (state) => {
     }
 };
 
-let mapDispatchToProps = (dispatch) => {
+let mapDispatchToProps = (dispatch: any): MapDispatchToPropsType => {
     return {
-        setCurrentPage: (pageNumber) => dispatch(setCurrentPageAC(pageNumber)),
-        toggleFollowingInProgress: (preloader, userId) => dispatch(toggleFollowingInProgressAC(preloader, userId)),
-        requestUsersThunk: (currentPage, pageSize) => dispatch(requestUsersThunkCreator(currentPage, pageSize)),
-        followThunk: (userId) => dispatch(followThunkCreator(userId)),
-        unfollowThunk: (userId) => dispatch(unfollowThunkCreator(userId))
+        setCurrentPage: (pageNumber: number) => dispatch(setCurrentPageAC(pageNumber)),
+        requestUsersThunk: (currentPage: number, pageSize: number) => dispatch(requestUsersThunkCreator(currentPage, pageSize)),
+        followThunk: (userId: number) => dispatch(followThunkCreator(userId)),
+        unfollowThunk: (userId: number) => dispatch(unfollowThunkCreator(userId))
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+// TStateProps = {}, TDispatchProps = {}, TOwnProps = {}, State = DefaultRootState
+export default connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStateType>
+(mapStateToProps, mapDispatchToProps)(UsersContainer);

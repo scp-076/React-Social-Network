@@ -29,5 +29,6 @@ export type userType = {
     id: number,
     name: string,
     status: string,
-    photos: profilePhotosType
+    photos: profilePhotosType,
+    followed: boolean
 };

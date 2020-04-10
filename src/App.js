@@ -5,7 +5,7 @@ import {BrowserRouter, Redirect, Route, Switch, withRouter} from "react-router-d
 import {News} from "./Components/News/News";
 import {Music} from "./Components/Music/Music";
 import {Settings} from "./Components/Settings/Settings";
-import UsersAPI from "./Components/Users/UsersContainer";
+import UsersContainer from "./Components/Users/UsersContainer";
 import HeaderContainer from "./Components/Header/HeaderContainer";
 import Login from "./Components/Login/Login";
 import {connect} from "react-redux";
@@ -33,7 +33,6 @@ class App extends React.Component {
         window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors);
     }
 
-
     render() {
         if (!this.props.initialized) {
             return <Preloader/>
@@ -47,22 +46,22 @@ class App extends React.Component {
                         <div className={classes.appWrapperContent}>
                             <Switch>
                                 <Route exact path={'/'} render={() => <Redirect to={'/profile'}/>}/>
-                            <Route path='/profile/:userId?' render={() => {
-                                return <React.Suspense fallback={<div>Loading...</div>}>
-                                    <ProfileContainer/>
-                                </React.Suspense>
-                            }}/>
-                            <Route exact path='/messages' render={() => {
-                                return <React.Suspense fallback={<div>Loading...</div>}>
-                                    <DialogsContainer/>
-                                </React.Suspense>
-                            }}/>
-                            <Route path='/news' render={() => <News/>}/>
-                            <Route path='/music' render={() => <Music/>}/>
-                            <Route path='/settings' render={() => <Settings/>}/>
-                            <Route path='/users' render={() => <UsersAPI/>}/>
-                            <Route exact path='/login' render={() => <Login/>}/>
-                            <Route path='*' render={() => <div>404 NOT FOUND</div>}/>
+                                <Route path='/profile/:userId?' render={() => {
+                                    return <React.Suspense fallback={<div>Loading...</div>}>
+                                        <ProfileContainer/>
+                                    </React.Suspense>
+                                }}/>
+                                <Route exact path='/messages' render={() => {
+                                    return <React.Suspense fallback={<div>Loading...</div>}>
+                                        <DialogsContainer/>
+                                    </React.Suspense>
+                                }}/>
+                                <Route path='/news' render={() => <News/>}/>
+                                <Route path='/music' render={() => <Music/>}/>
+                                <Route path='/settings' render={() => <Settings/>}/>
+                                <Route path='/users' render={() => <UsersContainer pageTitle={'users page'}/>}/>
+                                <Route exact path='/login' render={() => <Login/>}/>
+                                <Route path='*' render={() => <div>404 NOT FOUND</div>}/>
                             </Switch>
                             {/*switch перебирает роуты, при нахождении нужного он возвращает его и остальные не просматриваются*/}
                         </div>

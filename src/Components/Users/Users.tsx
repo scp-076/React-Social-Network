@@ -3,9 +3,20 @@ import classes from "./users.module.scss";
 import avatarImg from "../../assets/images/logo-img.jpg";
 import {NavLink} from "react-router-dom";
 import Paginator from "../common/Paginator";
+import {userType} from '../../types/types';
 
+type propsType = {
+    totalUsersCount: number,
+    pageSize: number,
+    currentPage: number,
+    onPageChanged: (page: number) => void,
+    users: Array<userType>,
+    followingInProgress: Array<number>,
+    followThunk: any,
+    unfollowThunk: any
+};
 
-const Users = (props) => {
+const Users: React.FC<propsType> = (props) => {
     return <div>
 
         <Paginator
