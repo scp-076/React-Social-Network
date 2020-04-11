@@ -1,4 +1,4 @@
-import {authAPI, securityAPI} from "../API/api";
+import {authAPI, securityAPI, resultCodeEnum} from "../API/api";
 import { stopSubmit } from "redux-form";
 
 const SET_USER_DATA = 'auth/SET_USER_DATA';
@@ -69,7 +69,7 @@ export const getCaptchaURLAC = (captchaURL: string): getCaptchaURLACType => ({ty
 
 export const getAuthUserDataThunkCreator = () => async (dispatch: any) => {
     let response = await authAPI.me();
-    if (response.data.resultCode === 0) {
+    if (response.data.resultCode === resultCodeEnum.Success) {
         let {id, email, login} = response.data.data;
         dispatch(setAuthUserDataAC(id, email, login, true))
     }
@@ -77,10 +77,10 @@ export const getAuthUserDataThunkCreator = () => async (dispatch: any) => {
 
 export const LoginThunkCreator = (email: string, password: string, rememberMe: boolean, captcha: string) => async (dispatch: any) => {
     let response = await authAPI.login(email, password, rememberMe, captcha);
-    if (response.data.resultCode === 0) {
+    if (response.data.resultCode === resultCodeEnum.Success) {
         dispatch(getAuthUserDataThunkCreator());
     } else {
-        if (response.data.resultCode === 10) {
+        if (response.data.resultCode === resultCodeEnum.CaptchaIsRequired) {
             dispatch(getCaptchaURLThunkCreator()); // запрос каптчи если с сервера пришло 10
         }
         let messages = response.data.messages.length > 0 ? response.data.messages[0] : 'Error;';
