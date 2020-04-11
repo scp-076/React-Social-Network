@@ -1,6 +1,9 @@
 import {usersAPI as userAPI, usersAPI} from "../API/api";
 import {updateObjectInArray} from "../utils/object-helpers";
 import { profilePhotosType, userType } from "../types/types";
+import { AppStateType } from "./redux-store";
+import { Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -12,16 +15,16 @@ const TOGGLE_FOLLOWING_PROGRESS = 'TOGGLE_FOLLOWING_PROGRESS';
 
 let initialState = {
     users: [] as Array<userType>,
-    pageSize: 10,
-    totalUsersCount: 0,
-    currentPage: 1,
-    preloader: false,
+    pageSize: 10 as number,
+    totalUsersCount: 0 as number,
+    currentPage: 1 as number,
+    preloader: false as boolean,
     followingInProgress: [] as Array<number> // array of users ids
 };
 
 type initialStateType = typeof initialState;
 
-const usersReducer = (state = initialState, action: any): initialStateType => {
+const usersReducer = (state = initialState, action: actionsType): initialStateType => {
 
     switch (action.type) {
         case FOLLOW:
@@ -59,6 +62,9 @@ const usersReducer = (state = initialState, action: any): initialStateType => {
             return state;
     }
 };
+
+type actionsType = followACType | unfollowACType | setUsersACType | setCurrentPageACType | setTotalUsersCountACType | togglePreloaderACType |
+    togglePreloaderACType | toggleFollowingInProgressACType;
 
 type followACType = {
     type: typeof FOLLOW,
@@ -101,8 +107,12 @@ export const toggleFollowingInProgressAC = (preloader: boolean, userId: number):
     userId
 });
 
-export const requestUsersThunkCreator = (page: number, pageSize: number) => {
-    return async (dispatch: any) => {
+type getStateType = () => AppStateType;
+type dispatchType = Dispatch<actionsType>; //либо так, либо через ThunkAction
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, actionsType>;
+
+export const requestUsersThunkCreator = (page: number, pageSize: number): ThunkType => {
+    return async (dispatch, getState) => {
         dispatch(togglePreloaderAC(true));
         let data = await usersAPI.getUsers(page, pageSize); // ajax вынесен в DAL (data access layer) - api.js
         dispatch(togglePreloaderAC(false));
@@ -111,24 +121,24 @@ export const requestUsersThunkCreator = (page: number, pageSize: number) => {
     };
 };
 
-const followUnfollowFlow = async (dispatch: any, userId: number, apiMethod: any, actionCreator: any) => {
+const _followUnfollowFlow = async (dispatch: dispatchType, userId: number, apiMethod: any, actionCreator: (userId: number) => followACType | unfollowACType) => {
     dispatch(toggleFollowingInProgressAC(true, userId));
     let data = await apiMethod(userId);
     if (data.resultCode === 0) {
         dispatch(actionCreator(userId));
-    }
+    };
     dispatch(toggleFollowingInProgressAC(false, userId));
 };
 
-export const followThunkCreator = (userId: number) => {
-    return async (dispatch: any) => {
-        followUnfollowFlow(dispatch, userId, userAPI.follow.bind(userAPI), followAC);
+export const followThunkCreator = (userId: number): ThunkType => {
+    return async (dispatch) => {
+        _followUnfollowFlow(dispatch, userId, userAPI.follow.bind(userAPI), followAC);
     };
 };
 
-export const unfollowThunkCreator = (userId: number) => {
-    return async (dispatch: any) => {
-        followUnfollowFlow(dispatch, userId, userAPI.unfollow.bind(userAPI), unFollowAC)
+export const unfollowThunkCreator = (userId: number): ThunkType => {
+    return async (dispatch) => {
+        _followUnfollowFlow(dispatch, userId, userAPI.unfollow.bind(userAPI), unFollowAC)
     }
 };
 

@@ -27,11 +27,11 @@ class App extends React.Component {
     componentDidMount() {
         this.props.initializeAppThunk();
         window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors);
-    }
+    };
 
     componentWillUnmount() {
         window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors);
-    }
+    };
 
     render() {
         if (!this.props.initialized) {
@@ -69,19 +69,19 @@ class App extends React.Component {
                 </BrowserRouter>
             );
         }
-    }
-}
+    };
+};
 
 let mapStateToProps = (state) => {
     return {
         initialized: state.app.initialized
-    }
+    };
 };
 
 let mapDispatchToProps = (dispatch) => {
     return {
         initializeAppThunk: () => dispatch(initializeAppThunkCreator())
-    }
+    };
 };
 
 export default compose(
