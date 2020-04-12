@@ -1,12 +1,17 @@
 import React from 'react';
-import {Field, reduxForm} from "redux-form";
+import {Field, reduxForm, InjectedFormProps} from "redux-form";
 import {Element} from "../common/FormControls/FormControls";
 import {required} from "../../utils/validators/validator";
 import classes from '../common/FormControls/formsControls.module.scss';
+import { LoginFormValuesType } from './Login';
 
 const Input = Element('input');
 
-const LoginForm = (props) => {
+type LoginFormOwnProps = {
+    captchaURL: string | null
+};
+
+const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType> & LoginFormOwnProps> = (props) => {
 
     return (
         <form onSubmit={props.handleSubmit}>
@@ -35,4 +40,4 @@ const LoginForm = (props) => {
     )
 };
 
-export const ReduxLoginForm = reduxForm({form: 'Login'})(LoginForm);
+export const ReduxLoginForm = reduxForm<LoginFormValuesType, LoginFormOwnProps>({form: 'Login'})(LoginForm);

@@ -1,7 +1,6 @@
 import React from 'react';
 import classes from "./formsControls.module.scss";
 
-
 export const Element = Element => ({ input, meta, ...props }) => {
     const hasError = meta.touched && meta.error;
     return (
